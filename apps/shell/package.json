@@ -7,14 +7,29 @@
     "build": "tsc",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "dev": "node --watch dist/index.js"
+    "dev": "tsx watch backend/start.ts",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "node --input-type=module -e \"import('./dist/backend/db/migrate.js').then(m => m.runMigrations(process.env.DATABASE_URL))\""
   },
   "dependencies": {
     "@panacea/shared": "workspace:*",
-    "@panacea/ui": "workspace:*"
+    "@panacea/ui": "workspace:*",
+    "fastify": "^5.0.0",
+    "fastify-plugin": "^5.0.0",
+    "jsonwebtoken": "^9.0.0",
+    "bcryptjs": "^2.4.3",
+    "postgres": "^3.4.0",
+    "drizzle-orm": "^0.36.0"
   },
   "devDependencies": {
     "typescript": "^5.0.0",
-    "vitest": "^2.0.0"
+    "vitest": "^2.0.0",
+    "@types/node": "^20.0.0",
+    "@types/jsonwebtoken": "^9.0.0",
+    "@types/bcryptjs": "^2.4.6",
+    "drizzle-kit": "^0.28.0",
+    "testcontainers": "^10.0.0",
+    "@testcontainers/postgresql": "^10.0.0",
+    "tsx": "^4.0.0"
   }
 }
