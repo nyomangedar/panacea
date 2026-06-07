@@ -37,6 +37,32 @@ services:
     networks:
       - panacea
 
+  backend:
+    image: node:20-alpine
+    working_dir: /app
+    volumes:
+      - .:/app
+    command: sh -c "corepack enable && pnpm install && pnpm --filter @panacea/shell dev"
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/panacea
+      REDIS_URL: redis://redis:6379
+      JWT_SECRET: dev-secret
+      PORT: 3000
+      NODE_ENV: development
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - panacea
+
+  worker:
+    image: node:20-alpine
+    command: ["echo", "worker — not yet implemented"]
+    networks:
+      - panacea
+
 networks:
   panacea:
     driver: bridge
