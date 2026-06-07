@@ -11,16 +11,14 @@ declare module 'fastify' {
 const authMiddleware: FastifyPluginAsync = async (app) => {
   app.decorateRequest('user', null);
 
-  app.addHook('onRequest', async (request: FastifyRequest, reply: FastifyReply) => {
+  app.addHook('onRequest', async (request: FastifyRequest, _reply: FastifyReply) => {
     const header = request.headers.authorization;
-    if (!header?.startsWith('Bearer ')) {
-      return reply.status(401).send({ error: 'Unauthorized' });
-    }
+    if (!header?.startsWith('Bearer ')) return;
     const token = header.slice(7);
     try {
       request.user = verifyToken(token);
     } catch {
-      return reply.status(401).send({ error: 'Unauthorized' });
+      // invalid token — leave request.user as null, route handler decides whether to reject
     }
   });
 };
