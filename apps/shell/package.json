@@ -1,0 +1,20 @@
+{
+  "name": "@panacea/shell",
+  "version": "0.0.1",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "dev": "node --watch dist/index.js"
+  },
+  "dependencies": {
+    "@panacea/shared": "workspace:*",
+    "@panacea/ui": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "vitest": "^2.0.0"
+  }
+}
