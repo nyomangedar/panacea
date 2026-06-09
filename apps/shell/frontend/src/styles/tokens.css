@@ -1,0 +1,54 @@
+/* Panacea design tokens — single source of truth for @panacea/ui and the shell.
+   Theme is switched via the [data-theme="light|dark"] attribute on <html>. */
+
+:root, [data-theme="light"] {
+  --color-background-primary:#ffffff;
+  --color-background-secondary:#f6f6f7;
+  --color-background-inverse:#18181b;
+  --color-text-primary:#18181b;
+  --color-text-secondary:#71717a;
+  --color-text-tertiary:#a1a1aa;
+  --color-text-inverse:#ffffff;
+  --color-border-primary:#d4d4d8;
+  --color-border-secondary:#e4e4e7;
+  --color-border-tertiary:#f0f0f1;
+  --color-accent:#7F77DD;
+  --color-accent-soft:#ECEBFA;
+  --color-success:#1D9E75; --color-success-soft:#E4F4EE;
+  --color-warning:#BA7517; --color-warning-soft:#F8EFDD;
+  --color-danger:#E5484D;  --color-danger-soft:#FBE9E9;
+  --color-info:#7F77DD;    --color-info-soft:#ECEBFA;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.05);
+  --shadow-md:0 8px 30px rgba(0,0,0,.14);
+}
+
+[data-theme="dark"] {
+  --color-background-primary:#161618;
+  --color-background-secondary:#1d1d20;
+  --color-background-inverse:#fafafa;
+  --color-text-primary:#fafafa;
+  --color-text-secondary:#a1a1aa;
+  --color-text-tertiary:#71717a;
+  --color-text-inverse:#18181b;
+  --color-border-primary:#3f3f46;
+  --color-border-secondary:#2c2c31;
+  --color-border-tertiary:#242428;
+  --color-accent:#9B93EA; --color-accent-soft:#26243A;
+  --color-success:#34C58E; --color-success-soft:#16271F;
+  --color-warning:#D9962E; --color-warning-soft:#2A2113;
+  --color-danger:#F0656A;  --color-danger-soft:#2C1819;
+  --color-info:#9B93EA;    --color-info-soft:#26243A;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.3);
+  --shadow-md:0 8px 30px rgba(0,0,0,.5);
+}
+
+:root {
+  --border-radius-sm:4px;
+  --border-radius-md:6px;
+  --border-radius-lg:10px;
+  --mod-admin:#3B7DD8;
+  --mod-ticketing:#7F77DD;
+  --mod-scheduler:#1D9E75;
+  --mod-analytics:#D85A30;
+  --mod-financing:#BA7517;
+}

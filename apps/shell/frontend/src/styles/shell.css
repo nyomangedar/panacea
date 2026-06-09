@@ -1,0 +1,122 @@
+/* Shell layout — sidebar + content. Adapted from claude/design/sidebar.html. */
+.shell { display: flex; height: 100%; }
+
+.sb {
+  width: 244px; min-width: 244px; display: flex; flex-direction: column;
+  background: var(--color-background-secondary);
+  border-right: 0.5px solid var(--color-border-secondary);
+  transition: width .16s ease, min-width .16s ease;
+}
+
+/* collapsed icon rail */
+.shell.collapsed .sb { width: 58px; min-width: 58px; }
+.shell.collapsed .sb-head { justify-content: center; padding: 12px 0; }
+.shell.collapsed .sb-head .who, .shell.collapsed .sb-head .sb-signout { display: none; }
+.shell.collapsed .sec-label { display: none; }
+.shell.collapsed .item { justify-content: center; padding: 8px 0; gap: 0; }
+.shell.collapsed .item .label, .shell.collapsed .item .close { display: none; }
+.shell.collapsed .item.active::before { left: 0; }
+.shell.collapsed .sb-new { padding: 8px 0; }
+.shell.collapsed .sb-new .lbl { display: none; }
+/* profile header */
+.sb-head {
+  display: flex; align-items: center; gap: 9px; padding: 12px;
+  border-bottom: 0.5px solid var(--color-border-tertiary);
+}
+.avatar {
+  width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+  background: var(--color-accent-soft); color: var(--color-accent);
+  display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600;
+}
+.who { flex: 1; min-width: 0; }
+.who-name {
+  font-size: 12px; font-weight: 600; line-height: 1.2;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.sb-signout {
+  flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; padding: 4px;
+  background: transparent; border: 0; cursor: pointer; color: var(--color-text-tertiary);
+  border-radius: var(--border-radius-sm);
+}
+.sb-signout:hover { color: var(--color-text-primary); background: var(--color-background-primary); }
+
+.sb-scroll { flex: 1; overflow-y: auto; overflow-x: hidden; padding: 8px; }
+.sec-label {
+  font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em;
+  color: var(--color-text-tertiary); padding: 10px 8px 5px;
+}
+.item {
+  display: flex; align-items: center; gap: 9px; padding: 7px 8px;
+  border-radius: var(--border-radius-md); cursor: pointer;
+  color: var(--color-text-secondary); user-select: none; position: relative;
+}
+.item:hover { background: var(--color-background-primary); color: var(--color-text-primary); }
+.item.active { background: var(--color-background-primary); color: var(--color-text-primary); font-weight: 500; }
+.item.active::before {
+  content: ""; position: absolute; left: 0; top: 7px; bottom: 7px; width: 2.5px;
+  border-radius: 2px; background: var(--color-accent);
+}
+.item .lead-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.item .label { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.item .close {
+  margin-left: auto; opacity: 0; font-size: 15px; line-height: 1;
+  color: var(--color-text-tertiary); background: transparent; border: 0; cursor: pointer;
+  padding: 0 4px; border-radius: 3px;
+}
+.item:hover .close, .item.active .close { opacity: 1; }
+.item .close:hover { color: var(--color-text-primary); background: var(--color-border-secondary); }
+.sb-new {
+  width: 100%; margin: 8px 0 4px; padding: 8px; border-radius: var(--border-radius-md);
+  border: 0.5px dashed var(--color-border-primary); background: transparent;
+  color: var(--color-text-secondary); cursor: pointer; font: inherit; font-size: 12px;
+  display: flex; align-items: center; gap: 7px; justify-content: center;
+}
+.sb-new:hover { background: var(--color-background-primary); color: var(--color-text-primary); border-style: solid; }
+
+.content { flex: 1; display: flex; flex-direction: column; background: var(--color-background-primary); min-width: 0; }
+.shell-topbar {
+  height: 44px; min-height: 44px; border-bottom: 0.5px solid var(--color-border-tertiary);
+  display: flex; align-items: center; gap: 10px; padding: 0 14px;
+  color: var(--color-text-secondary); font-size: 12px;
+}
+.shell-topbar .crumb { color: var(--color-text-primary); font-weight: 500; font-size: 13px; }
+.shell-topbar .spacer { flex: 1; }
+.sb-toggle {
+  display: inline-flex; align-items: center; justify-content: center; padding: 4px;
+  background: transparent; border: 0; cursor: pointer; color: var(--color-text-secondary);
+  border-radius: var(--border-radius-sm);
+}
+.sb-toggle:hover { color: var(--color-text-primary); background: var(--color-background-secondary); }
+.shell-main { flex: 1; overflow: auto; min-height: 0; }
+.shell-empty {
+  height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 12px; color: var(--color-text-secondary);
+}
+
+/* Module picker — adapted from claude/design/module-picker.html.
+   No horizontal padding here: the @panacea/ui Modal body already insets 18px,
+   so search + grid line up with the modal header and footer. */
+.pick-search { padding: 12px 0 4px; }
+.pick-search input {
+  width: 100%; box-sizing: border-box; font: inherit; font-size: 13px; padding: 8px 10px;
+  border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-primary);
+  background: var(--color-background-primary); color: var(--color-text-primary); outline: none;
+}
+.pick-search input:focus { border-color: var(--color-accent); box-shadow: 0 0 0 3px var(--color-accent-soft); }
+.pick-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 14px 0 18px; }
+.pick-card {
+  display: flex; gap: 11px; padding: 12px; text-align: left; position: relative;
+  border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md);
+  background: transparent; cursor: pointer; font: inherit;
+  transition: border-color .12s, background .12s;
+}
+.pick-card:hover { border-color: var(--color-border-primary); background: var(--color-background-secondary); }
+.pick-card.opened { cursor: default; opacity: .55; }
+.pick-ico {
+  width: 34px; height: 34px; border-radius: 8px; flex-shrink: 0; font-size: 15px; font-weight: 600;
+  display: flex; align-items: center; justify-content: center; background: var(--color-background-secondary);
+}
+.pick-text { display: flex; flex-direction: column; }
+.pick-name { font-size: 13px; font-weight: 600; color: var(--color-text-primary); }
+.pick-desc { font-size: 11px; color: var(--color-text-secondary); margin-top: 2px; }
+.opened-tag { position: absolute; top: 10px; right: 10px; font-size: 10px; font-weight: 600; color: var(--color-success); }

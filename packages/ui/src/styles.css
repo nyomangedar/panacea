@@ -1,0 +1,94 @@
+/* @panacea/ui component styles. Reads design tokens (CSS variables) defined by
+   the host app's tokens.css. Mirrors claude/design/*.html specs. */
+
+/* ── Button ──────────────────────────────────────────────────────────────── */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  font-family: inherit; font-size: 13px; font-weight: 500; line-height: 1;
+  padding: 8px 14px; border-radius: var(--border-radius-md); border: 0.5px solid transparent;
+  cursor: pointer; user-select: none; white-space: nowrap;
+  transition: background .12s, border-color .12s, opacity .12s;
+}
+.btn-primary { background: var(--color-background-inverse); color: var(--color-text-inverse); }
+.btn-primary:hover { opacity: .85; }
+.btn-accent { background: var(--color-accent); color: #fff; }
+.btn-accent:hover { opacity: .88; }
+.btn-secondary { background: var(--color-background-primary); color: var(--color-text-primary); border-color: var(--color-border-primary); }
+.btn-secondary:hover { background: var(--color-background-secondary); }
+.btn-ghost { background: transparent; color: var(--color-text-secondary); }
+.btn-ghost:hover { background: var(--color-background-secondary); color: var(--color-text-primary); }
+.btn-danger { background: var(--color-danger); color: #fff; }
+.btn-danger:hover { opacity: .88; }
+.btn-sm { padding: 5px 10px; font-size: 12px; }
+.btn-lg { padding: 10px 18px; font-size: 14px; }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+.spinner {
+  width: 13px; height: 13px; border-radius: 50%; border: 2px solid currentColor;
+  border-right-color: transparent; display: inline-block; animation: spin .6s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Input ───────────────────────────────────────────────────────────────── */
+.field { display: flex; flex-direction: column; gap: 5px; }
+.field-label { font-size: 12px; font-weight: 500; color: var(--color-text-primary); }
+.input {
+  font-family: inherit; font-size: 13px; color: var(--color-text-primary);
+  background: var(--color-background-primary); border: 0.5px solid var(--color-border-primary);
+  border-radius: var(--border-radius-md); padding: 8px 10px; width: 100%; outline: none;
+  transition: border-color .12s, box-shadow .12s;
+}
+.input::placeholder { color: var(--color-text-tertiary); }
+.input:focus { border-color: var(--color-accent); box-shadow: 0 0 0 3px var(--color-accent-soft); }
+.input:disabled { opacity: .5; cursor: not-allowed; }
+.input-wrap { position: relative; }
+.input-wrap i { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--color-text-tertiary); font-size: 15px; }
+.input-wrap .input { padding-left: 32px; }
+.field-help { font-size: 11px; color: var(--color-text-tertiary); }
+.field.error .input { border-color: var(--color-danger); }
+.field.error .field-label, .field.error .field-help { color: var(--color-danger); }
+
+/* ── Modal ───────────────────────────────────────────────────────────────── */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,.35); display: flex;
+  align-items: center; justify-content: center; z-index: 50; padding: 20px;
+}
+.modal {
+  background: var(--color-background-primary); border: 0.5px solid var(--color-border-secondary);
+  border-radius: var(--border-radius-lg); width: 420px; max-width: 100%;
+  box-shadow: var(--shadow-md); overflow: hidden;
+}
+.modal-head { padding: 16px 18px; display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.modal-title { font-size: 15px; font-weight: 600; }
+.modal-desc { font-size: 12px; color: var(--color-text-secondary); margin-top: 3px; }
+.modal-x { background: transparent; border: 0; color: var(--color-text-tertiary); cursor: pointer; font-size: 18px; line-height: 1; padding: 0; }
+.modal-x:hover { color: var(--color-text-primary); }
+.modal-body { padding: 0 18px 4px; }
+.modal-foot { padding: 16px 18px; display: flex; justify-content: flex-end; gap: 8px; }
+
+/* ── Card ────────────────────────────────────────────────────────────────── */
+.card {
+  border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-lg);
+  background: var(--color-background-primary); overflow: hidden;
+}
+.card-head {
+  padding: 14px 16px; border-bottom: 0.5px solid var(--color-border-tertiary);
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+}
+.card-title { font-size: 14px; font-weight: 600; }
+.card-desc { font-size: 12px; color: var(--color-text-secondary); margin-top: 2px; }
+.card-body { padding: 16px; font-size: 13px; color: var(--color-text-secondary); }
+.card-foot {
+  padding: 12px 16px; border-top: 0.5px solid var(--color-border-tertiary);
+  display: flex; justify-content: flex-end; gap: 8px; background: var(--color-background-secondary);
+}
+
+/* ── Skeleton ────────────────────────────────────────────────────────────── */
+.sk-stack { display: flex; flex-direction: column; gap: 9px; }
+.sk {
+  background: linear-gradient(90deg, var(--color-background-secondary) 25%, var(--color-border-tertiary) 37%, var(--color-background-secondary) 63%);
+  background-size: 400% 100%; animation: shimmer 1.4s ease infinite; border-radius: var(--border-radius-sm);
+}
+@keyframes shimmer { 0% { background-position: 100% 0; } 100% { background-position: -100% 0; } }
+.sk-line { height: 11px; }
+.sk-circle { width: 40px; height: 40px; border-radius: 50%; }
+.sk-block { height: 64px; border-radius: var(--border-radius-md); }
