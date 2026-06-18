@@ -1,7 +1,6 @@
 import type { ModuleManifest } from './module-registry';
 
-// M2 has no real module frontends yet (admin/ticketing land in M3/M4). These
-// placeholder loaders let the shell open modules as tabs end to end.
+// Ticketing has no real frontend yet (lands in M4). Placeholder lets it open as a tab.
 function placeholder(name: string) {
   return async () => ({
     default: () => (
@@ -13,6 +12,25 @@ function placeholder(name: string) {
 }
 
 export const MODULE_MANIFESTS: ModuleManifest[] = [
-  { id: 'admin', label: 'Admin', description: 'Users, roles & audit log', load: placeholder('Admin') },
-  { id: 'ticketing', label: 'Ticketing', description: 'Issues & workflows', load: placeholder('Ticketing') },
+  {
+    id: 'admin',
+    label: 'Admin',
+    description: 'Users, roles & audit log',
+    accessPermission: 'admin:access',
+    pages: [
+      { id: 'users', label: 'Users', accessPermission: 'admin:users:access' },
+      { id: 'groups', label: 'Groups', accessPermission: 'admin:groups:access' },
+      { id: 'roles', label: 'Roles', accessPermission: 'admin:roles:access' },
+      { id: 'audit', label: 'Audit log', accessPermission: 'admin:audit:access' },
+    ],
+    // dev: real admin UI from the sibling repo (Vite alias + ambient module decl)
+    load: () => import('@panacea-admin/frontend'),
+  },
+  {
+    id: 'ticketing',
+    label: 'Ticketing',
+    description: 'Issues & workflows',
+    accessPermission: 'ticketing:access',
+    load: placeholder('Ticketing'),
+  },
 ];

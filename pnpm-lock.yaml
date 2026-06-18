@@ -129,7 +129,26 @@ importers:
         version: 2.1.9(@types/node@20.19.42)(jsdom@25.0.1)
 
   packages/shared:
+    dependencies:
+      drizzle-orm:
+        specifier: ^0.36.0
+        version: 0.36.4(@types/react@18.3.31)(postgres@3.4.9)(react@18.3.1)
+      fastify:
+        specifier: ^5.0.0
+        version: 5.8.5
+      fastify-plugin:
+        specifier: ^5.0.0
+        version: 5.1.0
+      postgres:
+        specifier: ^3.4.0
+        version: 3.4.9
     devDependencies:
+      '@testcontainers/postgresql':
+        specifier: ^10.0.0
+        version: 10.28.0
+      testcontainers:
+        specifier: ^10.0.0
+        version: 10.28.0
       typescript:
         specifier: ^5.0.0
         version: 5.9.3

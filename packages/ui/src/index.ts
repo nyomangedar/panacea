@@ -8,3 +8,5 @@ export { Skeleton } from './Skeleton.js';
 export type { SkeletonProps } from './Skeleton.js';
 export { Card } from './Card.js';
 export type { CardProps } from './Card.js';
+export { Breadcrumb } from './Breadcrumb.js';
+export type { BreadcrumbProps, Crumb } from './Breadcrumb.js';

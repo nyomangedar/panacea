@@ -12,7 +12,7 @@ export function Shell() {
   const { tabs, activeTab, openTab, closeTab, switchTab } = useTabs();
   const [pickerOpen, setPickerOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
-  const { user, logout } = useAuth();
+  const { user, logout, permissions } = useAuth();
 
   function handleSelect(moduleId: string) {
     const mod = modules.find((m) => m.id === moduleId);
@@ -63,6 +63,7 @@ export function Shell() {
         open={pickerOpen}
         modules={modules}
         openModuleIds={tabs.map((t) => t.moduleId)}
+        permissions={permissions ? new Set(permissions) : undefined}
         onSelect={handleSelect}
         onClose={() => setPickerOpen(false)}
       />

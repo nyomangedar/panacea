@@ -7,6 +7,8 @@ export interface User {
 
 export interface AuthValue {
   user: User | null;
+  /** Optional so existing AuthValue mocks remain valid; the provider always supplies it. */
+  permissions?: string[];
   loading: boolean;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
@@ -14,16 +16,24 @@ export interface AuthValue {
 
 export const AuthContext = createContext<AuthValue | null>(null);
 
+interface MeResponse {
+  user: User;
+  permissions?: string[];
+}
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
+  const [permissions, setPermissions] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let active = true;
     fetch('/api/auth/me', { credentials: 'include' })
       .then((res) => (res.ok ? res.json() : null))
-      .then((data: { user: User } | null) => {
-        if (active) setUser(data?.user ?? null);
+      .then((data: MeResponse | null) => {
+        if (!active) return;
+        setUser(data?.user ?? null);
+        setPermissions(data?.permissions ?? []);
       })
       .catch(() => {
         if (active) setUser(null);
@@ -44,17 +54,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       body: JSON.stringify({ email, password }),
     });
     if (!res.ok) throw new Error('Invalid credentials');
-    const data: { user: User } = await res.json();
+    const data: MeResponse = await res.json();
     setUser(data.user);
+    setPermissions(data.permissions ?? []);
   }
 
   async function logout() {
     await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' });
     setUser(null);
+    setPermissions([]);
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ user, permissions, loading, login, logout }}>
+      {children}
+    </AuthContext.Provider>
   );
 }
 

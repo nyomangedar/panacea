@@ -1,4 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
+import { useState } from 'react';
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Modal } from './Modal';
@@ -23,6 +24,25 @@ describe('Modal', () => {
 
     await userEvent.keyboard('{Escape}');
     expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
+  it('keeps focus on a child input across parent re-renders (does not steal focus while typing)', async () => {
+    // TDD: ui/Modal.test.tsx — does not steal focus from a child input on re-render | positive
+    function Harness() {
+      const [value, setValue] = useState('');
+      // Inline onClose => a new identity on every render, the condition that used to
+      // re-run the focus trap and yank focus off the input on each keystroke.
+      return (
+        <Modal open title="Edit" onClose={() => setValue((v) => v)}>
+          <input aria-label="Name" value={value} onChange={(e) => setValue(e.target.value)} />
+        </Modal>
+      );
+    }
+    render(<Harness />);
+    const input = screen.getByLabelText('Name') as HTMLInputElement;
+    await userEvent.type(input, 'abc');
+    expect(input).toHaveFocus();
+    expect(input.value).toBe('abc');
   });
 
   it('does not render a dialog when closed', () => {

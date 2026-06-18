@@ -1,6 +1,7 @@
 import fp from 'fastify-plugin';
 import type { FastifyPluginAsync } from 'fastify';
 import type { Sql } from 'postgres';
+import { getUserPermissions } from '@panacea/shared';
 import { verifyPassword, signToken, verifyToken } from '../auth/auth.js';
 import { serializeSession, clearSession, readSession } from '../auth/cookies.js';
 
@@ -31,7 +32,8 @@ const authRoute: FastifyPluginAsync<{ db: Sql }> = async (app, { db }) => {
       return reply.status(401).send({ error: 'Invalid credentials' });
     }
     reply.header('Set-Cookie', serializeSession(signToken({ sub: user.id, role: 'user' })));
-    return { user: { id: user.id, email: user.email } };
+    const permissions = [...(await getUserPermissions(db, user.id))];
+    return { user: { id: user.id, email: user.email }, permissions };
   });
 
   app.get('/api/auth/me', async (req, reply) => {
@@ -41,7 +43,8 @@ const authRoute: FastifyPluginAsync<{ db: Sql }> = async (app, { db }) => {
       const { sub } = verifyToken(token);
       const [user] = await db<UserRow[]>`SELECT id, email FROM users WHERE id = ${sub}`;
       if (!user) return reply.status(401).send({ error: 'Unauthorized' });
-      return { user: { id: user.id, email: user.email } };
+      const permissions = [...(await getUserPermissions(db, user.id))];
+      return { user: { id: user.id, email: user.email }, permissions };
     } catch {
       return reply.status(401).send({ error: 'Unauthorized' });
     }

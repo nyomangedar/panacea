@@ -4,17 +4,36 @@
   "type": "module",
   "private": true,
   "exports": {
-    ".": "./dist/index.js"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./testkit": {
+      "types": "./dist/testkit.d.ts",
+      "default": "./dist/testkit.js"
+    }
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "drizzle"
+  ],
   "scripts": {
     "build": "tsc",
     "typecheck": "tsc --noEmit",
     "test": "vitest run"
   },
+  "dependencies": {
+    "fastify": "^5.0.0",
+    "fastify-plugin": "^5.0.0",
+    "postgres": "^3.4.0",
+    "drizzle-orm": "^0.36.0"
+  },
   "devDependencies": {
     "typescript": "^5.0.0",
-    "vitest": "^2.0.0"
+    "vitest": "^2.0.0",
+    "testcontainers": "^10.0.0",
+    "@testcontainers/postgresql": "^10.0.0"
   }
 }

@@ -14,6 +14,11 @@ const FOCUSABLE =
 
 export function Modal({ open, onClose, title, description, children, footer }: ModalProps) {
   const ref = useRef<HTMLDivElement>(null);
+  // Read onClose through a ref so the focus-trap effect depends only on `open`.
+  // Otherwise a fresh inline onClose on every parent render re-runs the effect and
+  // steals focus back to the first element on each keystroke (breaks typing in inputs).
+  const onCloseRef = useRef(onClose);
+  onCloseRef.current = onClose;
 
   useEffect(() => {
     if (!open) return;
@@ -22,7 +27,7 @@ export function Modal({ open, onClose, title, description, children, footer }: M
     focusable?.[0]?.focus();
 
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') return onClose();
+      if (e.key === 'Escape') return onCloseRef.current();
       if (e.key !== 'Tab' || !focusable?.length) return;
       const first = focusable[0];
       const last = focusable[focusable.length - 1];
@@ -36,7 +41,7 @@ export function Modal({ open, onClose, title, description, children, footer }: M
     };
     document.addEventListener('keydown', onKeyDown);
     return () => document.removeEventListener('keydown', onKeyDown);
-  }, [open, onClose]);
+  }, [open]);
 
   if (!open) return null;
 
